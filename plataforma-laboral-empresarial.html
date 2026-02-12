@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plataforma Laboral Empresarial</title>
+
+<style>
+:root{
+  --azul:#0A2A43;
+  --azul2:#0F4C81;
+  --dorado:#C6A84A;
+  --gris:#f4f6f9;
+}
+
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:var(--gris);
+  color:var(--azul);
+}
+
+header{
+  background:var(--azul);
+  color:white;
+  padding:20px;
+  text-align:center;
+}
+
+.container{
+  max-width:1200px;
+  margin:30px auto;
+  background:white;
+  padding:30px;
+  border-radius:10px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+h2{
+  border-left:6px solid var(--dorado);
+  padding-left:10px;
+  margin-top:30px;
+}
+
+input, select{
+  width:100%;
+  padding:8px;
+  margin-top:5px;
+  margin-bottom:10px;
+  border-radius:5px;
+  border:1px solid #ccc;
+}
+
+button{
+  background:var(--azul2);
+  color:white;
+  border:none;
+  padding:10px;
+  margin-top:10px;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:var(--dorado);
+  color:black;
+}
+
+.table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+}
+
+.table th, .table td{
+  border:1px solid #ddd;
+  padding:8px;
+  text-align:center;
+}
+
+.result{
+  margin-top:20px;
+  padding:15px;
+  background:#eef2f7;
+  border-radius:8px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>PLATAFORMA LABORAL EMPRESARIAL</h1>
+<p>Gestión Integral Empresario & Trabajador</p>
+</header>
+
+<div class="container">
+
+<h2>Registrar Empleado</h2>
+<input id="nombre" placeholder="Nombre Completo">
+<input id="cc" placeholder="Cédula">
+<input type="number" id="salario" placeholder="Salario Mensual">
+<input type="date" id="fechaIngreso">
+<select id="riesgo">
+<option value="0.00522">ARL Nivel 1 (0.522%)</option>
+<option value="0.01044">ARL Nivel 2 (1.044%)</option>
+<option value="0.02436">ARL Nivel 3 (2.436%)</option>
+<option value="0.04350">ARL Nivel 4 (4.350%)</option>
+<option value="0.06960">ARL Nivel 5 (6.960%)</option>
+</select>
+<input type="number" id="dotacion" placeholder="Dotación Mensual (si aplica)" value="0">
+
+<button onclick="agregarEmpleado()">Agregar Empleado</button>
+
+<h2>Empleados Registrados</h2>
+<table class="table" id="tabla">
+<tr>
+<th>Nombre</th>
+<th>CC</th>
+<th>Costo Empresa Mensual</th>
+<th>Liquidación a la Fecha</th>
+</tr>
+</table>
+
+<div class="result" id="totales"></div>
+
+<button onclick="guardarDatos()">Guardar Consulta</button>
+<button onclick="window.print()">Descargar / Imprimir</button>
+
+</div>
+
+<script>
+
+let empleados = JSON.parse(localStorage.getItem("empleados")) || [];
+
+function calcularCostoEmpresa(salario, riesgo, dotacion){
+
+let salud = salario*0.085;
+let pension = salario*0.12;
+let arl = salario*riesgo;
+let caja = salario*0.04;
+let icbf = salario*0.03;
+let sena = salario*0.02;
+
+return salario+salud+pension+arl+caja+icbf+sena+dotacion;
+}
+
+function calcularLiquidacion(salario, fechaIngreso){
+
+let hoy = new Date();
+let inicio = new Date(fechaIngreso);
+let dias = Math.floor((hoy-inicio)/(1000*60*60*24));
+
+let ces = (salario*dias)/360;
+let prima = (salario*dias)/360;
+let vac = (salario*dias)/720;
+
+return ces+prima+vac;
+}
+
+function agregarEmpleado(){
+
+let nombre = document.getElementById("nombre").value;
+let cc = document.getElementById("cc").value;
+let salario = parseFloat(document.getElementById("salario").value);
+let fechaIngreso = document.getElementById("fechaIngreso").value;
+let riesgo = parseFloat(document.getElementById("riesgo").value);
+let dotacion = parseFloat(document.getElementById("dotacion").value);
+
+let costo = calcularCostoEmpresa(salario, riesgo, dotacion);
+let liquidacion = calcularLiquidacion(salario, fechaIngreso);
+
+empleados.push({nombre,cc,salario,fechaIngreso,costo,liquidacion});
+
+renderTabla();
+}
+
+function renderTabla(){
+
+let tabla = document.getElementById("tabla");
+tabla.innerHTML=`
+<tr>
+<th>Nombre</th>
+<th>CC</th>
+<th>Costo Empresa Mensual</th>
+<th>Liquidación a la Fecha</th>
+</tr>`;
+
+let totalCosto=0;
+
+empleados.forEach(e=>{
+  totalCosto+=e.costo;
+  tabla.innerHTML+=`
+  <tr>
+  <td>${e.nombre}</td>
+  <td>${e.cc}</td>
+  <td>$${e.costo.toFixed(0)}</td>
+  <td>$${e.liquidacion.toFixed(0)}</td>
+  </tr>`;
+});
+
+document.getElementById("totales").innerHTML=`
+<h3>Total Costo Empresa Mensual: $${totalCosto.toFixed(0)}</h3>
+<p>Total Empleados: ${empleados.length}</p>
+`;
+}
+
+function guardarDatos(){
+localStorage.setItem("empleados", JSON.stringify(empleados));
+alert("Consulta guardada correctamente");
+}
+
+renderTabla();
+
+</script>
+
+</body>
+</html>
