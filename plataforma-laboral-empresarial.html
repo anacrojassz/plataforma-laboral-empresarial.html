@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plataforma Laboral Empresarial</title>
+<title>Plataforma Laboral Profesional</title>
 
 <style>
 :root{
@@ -25,6 +25,27 @@ header{
   color:white;
   padding:20px;
   text-align:center;
+}
+
+nav{
+  display:flex;
+  justify-content:center;
+  background:var(--azul2);
+}
+
+nav button{
+  flex:1;
+  padding:12px;
+  border:none;
+  background:var(--azul2);
+  color:white;
+  cursor:pointer;
+  font-weight:600;
+}
+
+nav button.active{
+  background:var(--dorado);
+  color:black;
 }
 
 .container{
@@ -51,7 +72,7 @@ input, select{
   border:1px solid #ccc;
 }
 
-button{
+button.calc{
   background:var(--azul2);
   color:white;
   border:none;
@@ -61,7 +82,7 @@ button{
   cursor:pointer;
 }
 
-button:hover{
+button.calc:hover{
   background:var(--dorado);
   color:black;
 }
@@ -78,30 +99,118 @@ button:hover{
   text-align:center;
 }
 
-.result{
+.result, .year-block, .normativa-content{
   margin-top:20px;
   padding:15px;
   background:#eef2f7;
   border-radius:8px;
 }
 
+.accordion{
+  background:var(--azul2);
+  color:white;
+  cursor:pointer;
+  padding:12px;
+  width:100%;
+  border:none;
+  text-align:left;
+  outline:none;
+  font-size:15px;
+  transition:0.4s;
+  margin-top:10px;
+  border-radius:5px;
+}
+
+.activeAcc, .accordion:hover{
+  background:var(--dorado);
+  color:black;
+}
+
+.panel{
+  padding:0 10px;
+  display:none;
+  background-color:#f4f7fb;
+  overflow:hidden;
+  margin-bottom:10px;
+  border-radius:5px;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<h1>PLATAFORMA LABORAL EMPRESARIAL</h1>
-<p>Gestión Integral Empresario & Trabajador</p>
+<h1>PLATAFORMA LABORAL PROFESIONAL</h1>
+<p>Consulta y liquidación de nómina y contratos - Colombia</p>
 </header>
+
+<nav>
+  <button class="tab-btn active" onclick="abrirTab('empleado')">Empleado</button>
+  <button class="tab-btn" onclick="abrirTab('empresario')">Empresario</button>
+  <button class="tab-btn" onclick="abrirTab('normativa')">Normativa</button>
+  <button class="tab-btn" onclick="abrirTab('historial')">Historial</button>
+</nav>
 
 <div class="container">
 
-<h2>Registrar Empleado</h2>
-<input id="nombre" placeholder="Nombre Completo">
-<input id="cc" placeholder="Cédula">
-<input type="number" id="salario" placeholder="Salario Mensual">
-<input type="date" id="fechaIngreso">
+<!-- MÓDULO EMPLEADO -->
+<div id="empleado" class="tab" style="display:block;">
+<h2>Cálculo Nómina y Liquidación</h2>
+
+<label>Nombre</label>
+<input id="nombreEmp" placeholder="Nombre completo">
+
+<label>Cédula</label>
+<input id="ccEmp" placeholder="Cédula">
+
+<label>Tipo de cálculo</label>
+<select id="tipoCalc">
+<option value="diario">Diario</option>
+<option value="semanal">Semanal</option>
+<option value="quincenal">Quincenal</option>
+<option value="mensual">Mensual</option>
+</select>
+
+<label>Salario base</label>
+<input type="number" id="salarioEmp">
+
+<label>Auxilio transporte</label>
+<input type="number" id="auxEmp" value="0">
+
+<label>Horas Extras Diurnas</label>
+<input type="number" id="extraDiurna" value="0">
+
+<label>Horas Extras Nocturnas</label>
+<input type="number" id="extraNocturna" value="0">
+
+<label>Horas Dominicales y Festivas</label>
+<input type="number" id="extraDominical" value="0">
+
+<label>Fecha Inicio Contrato</label>
+<input type="date" id="inicioEmp">
+
+<label>Fecha Fin Contrato</label>
+<input type="date" id="finEmp">
+
+<button class="calc" onclick="calcularEmpleado()">Calcular</button>
+
+<div id="resultadoEmp" class="result"></div>
+</div>
+
+<!-- MÓDULO EMPRESARIO -->
+<div id="empresario" class="tab" style="display:none;">
+<h2>Gestión Costos Nómina</h2>
+
+<label>Nombre Empresa</label>
+<input id="empresa">
+
+<label>NIT</label>
+<input id="nit">
+
+<h3>Agregar Empleado</h3>
+<input id="nombreE" placeholder="Nombre">
+<input id="ccE" placeholder="Cédula">
+<input type="number" id="salarioE" placeholder="Salario">
 <select id="riesgo">
 <option value="0.00522">ARL Nivel 1 (0.522%)</option>
 <option value="0.01044">ARL Nivel 2 (1.044%)</option>
@@ -109,109 +218,179 @@ button:hover{
 <option value="0.04350">ARL Nivel 4 (4.350%)</option>
 <option value="0.06960">ARL Nivel 5 (6.960%)</option>
 </select>
-<input type="number" id="dotacion" placeholder="Dotación Mensual (si aplica)" value="0">
+<input type="number" id="dotacion" placeholder="Dotación mensual" value="0">
 
-<button onclick="agregarEmpleado()">Agregar Empleado</button>
+<button class="calc" onclick="agregarEmpleado()">Agregar Empleado</button>
 
-<h2>Empleados Registrados</h2>
-<table class="table" id="tabla">
+<table class="table" id="tablaEmp">
 <tr>
-<th>Nombre</th>
-<th>CC</th>
-<th>Costo Empresa Mensual</th>
-<th>Liquidación a la Fecha</th>
+<th>Nombre</th><th>CC</th><th>Costo Mensual</th><th>Liquidación Acumulada</th>
 </tr>
 </table>
 
-<div class="result" id="totales"></div>
+<div id="totalesEmp" class="result"></div>
 
-<button onclick="guardarDatos()">Guardar Consulta</button>
-<button onclick="window.print()">Descargar / Imprimir</button>
+<button class="calc" onclick="guardarEmp()">Guardar Consulta</button>
+<button class="calc" onclick="window.print()">Imprimir / PDF</button>
+
+</div>
+
+<!-- NORMATIVA -->
+<div id="normativa" class="tab" style="display:none;">
+<h2>Normativa Laboral Vigente - Colombia</h2>
+
+<button class="accordion">Cesantías y Intereses</button>
+<div class="panel normativa-content">
+<p>Cesantías: Art. 249 CST<br>
+Intereses de cesantías: 12% anual, Ley 52 de 1975</p>
+</div>
+
+<button class="accordion">Prima de Servicios</button>
+<div class="panel normativa-content">
+<p>Prima: Art. 306 CST, proporcional al tiempo laborado</p>
+</div>
+
+<button class="accordion">Vacaciones</button>
+<div class="panel normativa-content">
+<p>Vacaciones: Art. 186 CST, 15 días hábiles por año</p>
+</div>
+
+<button class="accordion">Horas Extras y Recargos</button>
+<div class="panel normativa-content">
+<p>Extra Diurna 25%, Extra Nocturna 75%, Dominical/Festivo 100%</p>
+</div>
+
+<button class="accordion">Indemnización</button>
+<div class="panel normativa-content">
+<p>Indemnización según Art. 64 CST y tipo de contrato</p>
+</div>
+
+</div>
+
+<!-- HISTORIAL -->
+<div id="historial" class="tab" style="display:none;">
+<h2>Historial Guardado</h2>
+<div id="historialContent" class="result"></div>
+</div>
 
 </div>
 
 <script>
-
-let empleados = JSON.parse(localStorage.getItem("empleados")) || [];
-
-function calcularCostoEmpresa(salario, riesgo, dotacion){
-
-let salud = salario*0.085;
-let pension = salario*0.12;
-let arl = salario*riesgo;
-let caja = salario*0.04;
-let icbf = salario*0.03;
-let sena = salario*0.02;
-
-return salario+salud+pension+arl+caja+icbf+sena+dotacion;
+// Navegación por pestañas
+function abrirTab(tab){
+  document.querySelectorAll('.tab').forEach(t=>t.style.display='none');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(tab).style.display='block';
+  event.currentTarget.classList.add('active');
 }
 
-function calcularLiquidacion(salario, fechaIngreso){
+// Acordeón normativa
+document.querySelectorAll('.accordion').forEach((acc)=>{
+  acc.addEventListener('click', ()=>{
+    acc.classList.toggle('activeAcc');
+    let panel = acc.nextElementSibling;
+    if(panel.style.display==='block'){ panel.style.display='none'; }
+    else{ panel.style.display='block'; }
+  });
+});
 
-let hoy = new Date();
-let inicio = new Date(fechaIngreso);
-let dias = Math.floor((hoy-inicio)/(1000*60*60*24));
+// Funciones Empleado
+function calcularEmpleado(){
+  let nombre=document.getElementById("nombreEmp").value;
+  let salario=parseFloat(document.getElementById("salarioEmp").value);
+  let aux=parseFloat(document.getElementById("auxEmp").value);
+  let extraDiurna=parseFloat(document.getElementById("extraDiurna").value);
+  let extraNocturna=parseFloat(document.getElementById("extraNocturna").value);
+  let extraDom=parseFloat(document.getElementById("extraDominical").value);
+  let inicio=document.getElementById("inicioEmp").value;
+  let fin=document.getElementById("finEmp").value;
 
-let ces = (salario*dias)/360;
-let prima = (salario*dias)/360;
-let vac = (salario*dias)/720;
+  let dias=Math.floor((new Date(fin)-new Date(inicio))/(1000*60*60*24))+1;
+  
+  let salarioDia=salario/30;
+  let devengado=salario+(aux);
+  let horasExtras=(extraDiurna*salarioDia*1.25)+(extraNocturna*salarioDia*1.75)+(extraDom*salarioDia*2);
 
-return ces+prima+vac;
+  let salud=devengado*0.04;
+  let pension=devengado*0.04;
+
+  let ces=salario*dias/360;
+  let intCes=ces*0.12;
+  let prima=salario*dias/360;
+  let vac=salario*dias/720;
+
+  let total=devengado+horasExtras+ces+intCes+prima+vac-salud-pension;
+
+  document.getElementById("resultadoEmp").innerHTML=`
+  <h3>Resultado Empleado: ${nombre}</h3>
+  <table class="table">
+  <tr><th>Concepto</th><th>Valor</th></tr>
+  <tr><td>Salario Base</td><td>$${salario.toFixed(0)}</td></tr>
+  <tr><td>Auxilio Transporte</td><td>$${aux.toFixed(0)}</td></tr>
+  <tr><td>Horas Extras</td><td>$${horasExtras.toFixed(0)}</td></tr>
+  <tr><td>Cesantías</td><td>$${ces.toFixed(0)}</td></tr>
+  <tr><td>Intereses Cesantías</td><td>$${intCes.toFixed(0)}</td></tr>
+  <tr><td>Prima</td><td>$${prima.toFixed(0)}</td></tr>
+  <tr><td>Vacaciones</td><td>$${vac.toFixed(0)}</td></tr>
+  <tr><td>Salud 4%</td><td>$${salud.toFixed(0)}</td></tr>
+  <tr><td>Pensión 4%</td><td>$${pension.toFixed(0)}</td></tr>
+  <tr><th>Total Neto</th><th>$${total.toFixed(0)}</th></tr>
+  </table>
+  `;
 }
 
+// Funciones Empresario
+let empleados=[];
 function agregarEmpleado(){
+  let nombre=document.getElementById("nombreE").value;
+  let cc=document.getElementById("ccE").value;
+  let salario=parseFloat(document.getElementById("salarioE").value);
+  let riesgo=parseFloat(document.getElementById("riesgo").value);
+  let dotacion=parseFloat(document.getElementById("dotacion").value);
 
-let nombre = document.getElementById("nombre").value;
-let cc = document.getElementById("cc").value;
-let salario = parseFloat(document.getElementById("salario").value);
-let fechaIngreso = document.getElementById("fechaIngreso").value;
-let riesgo = parseFloat(document.getElementById("riesgo").value);
-let dotacion = parseFloat(document.getElementById("dotacion").value);
+  let salud=salario*0.085;
+  let pension=salario*0.12;
+  let arl=salario*riesgo;
+  let caja=salario*0.04;
+  let icbf=salario*0.03;
+  let sena=salario*0.02;
 
-let costo = calcularCostoEmpresa(salario, riesgo, dotacion);
-let liquidacion = calcularLiquidacion(salario, fechaIngreso);
+  let costoTotal=salario+salud+pension+arl+caja+icbf+sena+dotacion;
 
-empleados.push({nombre,cc,salario,fechaIngreso,costo,liquidacion});
+  empleados.push({nombre,cc,costoTotal});
 
-renderTabla();
+  renderTabla();
 }
 
 function renderTabla(){
-
-let tabla = document.getElementById("tabla");
-tabla.innerHTML=`
-<tr>
-<th>Nombre</th>
-<th>CC</th>
-<th>Costo Empresa Mensual</th>
-<th>Liquidación a la Fecha</th>
-</tr>`;
-
-let totalCosto=0;
-
-empleados.forEach(e=>{
-  totalCosto+=e.costo;
-  tabla.innerHTML+=`
-  <tr>
-  <td>${e.nombre}</td>
-  <td>${e.cc}</td>
-  <td>$${e.costo.toFixed(0)}</td>
-  <td>$${e.liquidacion.toFixed(0)}</td>
-  </tr>`;
-});
-
-document.getElementById("totales").innerHTML=`
-<h3>Total Costo Empresa Mensual: $${totalCosto.toFixed(0)}</h3>
-<p>Total Empleados: ${empleados.length}</p>
-`;
+  let tabla=document.getElementById("tablaEmp");
+  tabla.innerHTML=`<tr><th>Nombre</th><th>CC</th><th>Costo Mensual</th></tr>`;
+  let total=0;
+  empleados.forEach(e=>{
+    total+=e.costoTotal;
+    tabla.innerHTML+=`<tr><td>${e.nombre}</td><td>${e.cc}</td><td>$${e.costoTotal.toFixed(0)}</td></tr>`;
+  });
+  document.getElementById("totalesEmp").innerHTML=`<h3>Total Nómina Empresa: $${total.toFixed(0)}</h3><p>Total empleados: ${empleados.length}</p>`;
 }
 
-function guardarDatos(){
-localStorage.setItem("empleados", JSON.stringify(empleados));
-alert("Consulta guardada correctamente");
+function guardarEmp(){
+  localStorage.setItem("empleados",JSON.stringify(empleados));
+  alert("Consulta guardada correctamente");
+  renderHistorial();
 }
 
-renderTabla();
+function renderHistorial(){
+  let h=document.getElementById("historialContent");
+  let data=JSON.parse(localStorage.getItem("empleados"))||[];
+  if(data.length===0){h.innerHTML="No hay historial guardado"; return;}
+  h.innerHTML=`<table class="table"><tr><th>Nombre</th><th>CC</th><th>Costo Mensual</th></tr>`;
+  data.forEach(e=>{
+    h.innerHTML+=`<tr><td>${e.nombre}</td><td>${e.cc}</td><td>$${e.costoTotal.toFixed(0)}</td></tr>`;
+  });
+  h.innerHTML+="</table>";
+}
+
+renderHistorial();
 
 </script>
 
