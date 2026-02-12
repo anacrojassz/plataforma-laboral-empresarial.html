@@ -7,109 +7,87 @@
 
 <style>
 :root{
---azul:#0A2A43;
---azul2:#0F4C81;
---dorado:#C6A84A;
---gris:#f4f6f9;
+  --azul:#0A2A43;
+  --azul2:#0F4C81;
+  --dorado:#C6A84A;
+  --gris:#f4f6f9;
 }
 
 body{
-margin:0;
-font-family:'Segoe UI',sans-serif;
-background:var(--gris);
-color:var(--azul);
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:var(--gris);
+  color:var(--azul);
 }
 
 header{
-background:var(--azul);
-color:white;
-padding:20px;
-text-align:center;
-}
-
-nav{
-display:flex;
-justify-content:center;
-background:var(--azul2);
-}
-
-nav button{
-flex:1;
-padding:12px;
-border:none;
-background:var(--azul2);
-color:white;
-cursor:pointer;
-font-weight:600;
-}
-
-nav button.active{
-background:var(--dorado);
-color:black;
+  background:var(--azul);
+  color:white;
+  padding:20px;
+  text-align:center;
 }
 
 .container{
-max-width:1200px;
-margin:30px auto;
-background:white;
-padding:30px;
-border-radius:10px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
+  max-width:1100px;
+  margin:30px auto;
+  background:white;
+  padding:30px;
+  border-radius:10px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.1);
 }
 
 h2{
-border-left:6px solid var(--dorado);
-padding-left:10px;
+  border-left:6px solid var(--dorado);
+  padding-left:10px;
 }
 
 input, select{
-width:100%;
-padding:8px;
-margin:6px 0 12px 0;
-border-radius:5px;
-border:1px solid #ccc;
+  width:100%;
+  padding:8px;
+  margin-top:5px;
+  margin-bottom:10px;
+  border-radius:5px;
+  border:1px solid #ccc;
 }
 
-button.calc{
-background:var(--azul2);
-color:white;
-border:none;
-padding:10px;
-border-radius:6px;
-cursor:pointer;
+button{
+  background:var(--azul2);
+  color:white;
+  border:none;
+  padding:10px;
+  border-radius:6px;
+  cursor:pointer;
+  margin-top:10px;
 }
 
-button.calc:hover{
-background:var(--dorado);
-color:black;
-}
-
-.card{
-background:#eef2f7;
-padding:15px;
-border-radius:8px;
-margin-top:15px;
-}
-
-.total{
-background:var(--dorado);
-color:black;
-padding:15px;
-border-radius:8px;
-font-weight:bold;
-margin-top:20px;
+button:hover{
+  background:var(--dorado);
+  color:black;
 }
 
 .table{
-width:100%;
-border-collapse:collapse;
-margin-top:10px;
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
 }
 
-.table th,.table td{
-border:1px solid #ddd;
-padding:8px;
-text-align:center;
+.table th, .table td{
+  border:1px solid #ddd;
+  padding:8px;
+  text-align:center;
+}
+
+.result{
+  margin-top:20px;
+  padding:15px;
+  background:#eef2f7;
+  border-radius:8px;
+}
+
+.total-final{
+  font-size:20px;
+  font-weight:bold;
+  color:var(--dorado);
 }
 </style>
 </head>
@@ -118,174 +96,208 @@ text-align:center;
 
 <header>
 <h1>PLATAFORMA LABORAL PROFESIONAL</h1>
-<p>Consultas y gestión laboral - Colombia</p>
+<p>Nómina y Liquidación - Colombia</p>
 </header>
 
-<nav>
-<button class="active" onclick="abrirTab('empleado',this)">Empleado</button>
-<button onclick="abrirTab('empresario',this)">Empresario</button>
-<button onclick="abrirTab('historial',this)">Historial</button>
-</nav>
-
 <div class="container">
-
-<!-- ================= EMPLEADO ================= -->
-<div id="empleado" class="tab">
 
 <h2>Módulo Empleado</h2>
 
 <label>Tipo de Consulta</label>
-<select id="tipoConsulta" onchange="cambiarFormulario()">
-<option value="nomina">Cálculo Nómina</option>
-<option value="liquidacion">Liquidación Contrato</option>
+<select id="modoConsulta" onchange="cambiarModo()">
+  <option value="nomina">Nómina</option>
+  <option value="liquidacion">Liquidación</option>
 </select>
 
+<!-- ====================== NOMINA ====================== -->
 <div id="formNomina">
 
-<label>Salario mensual</label>
-<input type="number" id="salarioNom">
-
-<label>Días trabajados</label>
-<input type="number" id="diasNom">
-
-<label>Horas Extra Diurnas</label>
-<input type="number" id="extraD" value="0">
-
-<label>Horas Extra Nocturnas</label>
-<input type="number" id="extraN" value="0">
-
-<label>Dominicales / Festivos</label>
-<input type="number" id="extraDom" value="0">
-
-<label>¿Tiene Auxilio?</label>
-<select id="auxNom">
-<option value="si">Sí</option>
-<option value="no">No</option>
+<label>Tipo de vínculo</label>
+<select id="tipoVinculo">
+  <option value="laboral">Contrato Laboral</option>
+  <option value="servicios">Prestación de Servicios</option>
 </select>
 
-<button class="calc" onclick="calcularNomina()">Calcular</button>
+<label>Periodo</label>
+<select id="periodoNomina">
+  <option value="diario">Diario</option>
+  <option value="semanal">Semanal</option>
+  <option value="quincenal">Quincenal</option>
+  <option value="mensual">Mensual</option>
+</select>
 
-<div id="resultadoNom"></div>
+<label>Salario mensual base</label>
+<input type="number" id="salarioNomina">
+
+<label>Días trabajados</label>
+<input type="number" id="diasTrabajados" value="30">
+
+<label>Horas Extras Diurnas (25%)</label>
+<input type="number" id="extraDiurna" value="0">
+
+<label>Horas Extras Nocturnas (75%)</label>
+<input type="number" id="extraNocturna" value="0">
+
+<label>Horas Dominicales / Festivas (100%)</label>
+<input type="number" id="extraDominical" value="0">
+
+<button onclick="calcularNomina()">Calcular Nómina</button>
+
+<div id="resultadoNomina" class="result"></div>
 
 </div>
 
+<!-- ====================== LIQUIDACION ====================== -->
 <div id="formLiquidacion" style="display:none;">
 
 <label>Salario mensual</label>
 <input type="number" id="salarioLiq">
 
-<label>Auxilio transporte</label>
+<label>Auxilio transporte mensual</label>
 <input type="number" id="auxLiq" value="0">
 
-<label>Fecha inicio</label>
+<label>Fecha Inicio</label>
 <input type="date" id="inicioLiq">
 
-<label>Fecha fin</label>
+<label>Fecha Fin</label>
 <input type="date" id="finLiq">
 
-<button class="calc" onclick="agregarPeriodo()">Agregar Periodo</button>
+<button onclick="agregarLiquidacion()">Agregar Año / Periodo</button>
 
-<div id="periodosLiq"></div>
-<div id="totalLiq"></div>
+<div id="resultadoLiquidacion"></div>
 
-</div>
-
-</div>
-
-<!-- ================= EMPRESARIO ================= -->
-<div id="empresario" class="tab" style="display:none;">
-
-<h2>Módulo Empresario</h2>
-
-<input id="empNombre" placeholder="Nombre empleado">
-<input id="empCC" placeholder="Cédula">
-<input type="number" id="empSalario" placeholder="Salario">
-
-<select id="empRiesgo">
-<option value="0.00522">ARL 1 (0.522%)</option>
-<option value="0.01044">ARL 2 (1.044%)</option>
-<option value="0.02436">ARL 3 (2.436%)</option>
-<option value="0.04350">ARL 4 (4.350%)</option>
-<option value="0.06960">ARL 5 (6.960%)</option>
-</select>
-
-<button class="calc" onclick="guardarEmpleado()">Guardar</button>
-
-<div id="listaEmpresa"></div>
-<div id="totalEmpresa"></div>
-
-</div>
-
-<!-- ================= HISTORIAL ================= -->
-<div id="historial" class="tab" style="display:none;">
-<h2>Historial</h2>
-<div id="historialContent"></div>
 </div>
 
 </div>
 
 <script>
 
-const SALARIO_MINIMO = 1300000;
-let periodos = [];
-let empleados = [];
+// ================= UTILIDADES =================
 
-function formatoCOP(v){
-return new Intl.NumberFormat('es-CO',{
-style:'currency',
-currency:'COP',
-minimumFractionDigits:0
-}).format(v);
+function formatoCOP(valor){
+  return valor.toLocaleString("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0});
 }
 
-function abrirTab(tab,btn){
-document.querySelectorAll(".tab").forEach(t=>t.style.display="none");
-document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-document.getElementById(tab).style.display="block";
-btn.classList.add("active");
+function diasEntre(f1,f2){
+  return Math.floor((new Date(f2)-new Date(f1))/(1000*60*60*24))+1;
 }
 
-function cambiarFormulario(){
-let tipo = document.getElementById("tipoConsulta").value;
-document.getElementById("formNomina").style.display = tipo==="nomina"?"block":"none";
-document.getElementById("formLiquidacion").style.display = tipo==="liquidacion"?"block":"none";
+// ================= CAMBIO MODO =================
+
+function cambiarModo(){
+  let modo=document.getElementById("modoConsulta").value;
+  document.getElementById("formNomina").style.display = modo==="nomina"?"block":"none";
+  document.getElementById("formLiquidacion").style.display = modo==="liquidacion"?"block":"none";
 }
 
-/* ================= NOMINA ================= */
+// ================= NOMINA =================
 
 function calcularNomina(){
 
-let salario=parseFloat(document.getElementById("salarioNom").value);
-let dias=parseFloat(document.getElementById("diasNom").value);
-let extraD=parseFloat(document.getElementById("extraD").value);
-let extraN=parseFloat(document.getElementById("extraN").value);
-let extraDom=parseFloat(document.getElementById("extraDom").value);
-let auxSel=document.getElementById("auxNom").value;
+  let salario=parseFloat(document.getElementById("salarioNomina").value)||0;
+  let dias=parseFloat(document.getElementById("diasTrabajados").value)||30;
+  let tipoVinculo=document.getElementById("tipoVinculo").value;
 
-if(!salario || !dias){
-alert("Complete salario y días.");
-return;
+  let extraD=parseFloat(document.getElementById("extraDiurna").value)||0;
+  let extraN=parseFloat(document.getElementById("extraNocturna").value)||0;
+  let extraDom=parseFloat(document.getElementById("extraDominical").value)||0;
+
+  if(!salario){alert("Ingrese salario"); return;}
+
+  let valorHora=salario/240;
+  let salarioPeriodo=(salario/30)*dias;
+
+  let horasExtras=
+      (extraD*valorHora*1.25)+
+      (extraN*valorHora*1.75)+
+      (extraDom*valorHora*2);
+
+  let salud=0;
+  let pension=0;
+
+  if(tipoVinculo==="laboral"){
+    salud=salarioPeriodo*0.04;
+    pension=salarioPeriodo*0.04;
+  }
+
+  let total=salarioPeriodo+horasExtras-salud-pension;
+
+  document.getElementById("resultadoNomina").innerHTML=`
+  <table class="table">
+  <tr><td>Salario periodo</td><td>${formatoCOP(salarioPeriodo)}</td></tr>
+  <tr><td>Horas extras</td><td>${formatoCOP(horasExtras)}</td></tr>
+  <tr><td>Salud</td><td>${formatoCOP(salud)}</td></tr>
+  <tr><td>Pensión</td><td>${formatoCOP(pension)}</td></tr>
+  <tr><th>Total a pagar</th><th>${formatoCOP(total)}</th></tr>
+  </table>
+  `;
 }
 
-if(salario < SALARIO_MINIMO){
-alert("Salario inferior al mínimo legal.");
-return;
+// ================= LIQUIDACION =================
+
+let liquidaciones=[];
+
+function agregarLiquidacion(){
+
+  let salario=parseFloat(document.getElementById("salarioLiq").value)||0;
+  let aux=parseFloat(document.getElementById("auxLiq").value)||0;
+  let inicio=document.getElementById("inicioLiq").value;
+  let fin=document.getElementById("finLiq").value;
+
+  if(!salario||!inicio||!fin){alert("Complete datos"); return;}
+
+  let dias=diasEntre(inicio,fin);
+
+  let ces=salario*dias/360;
+  let intCes=ces*0.12*(dias/360);
+  let prima=salario*dias/360;
+  let vac=salario*dias/720;
+
+  let total=ces+intCes+prima+vac;
+
+  liquidaciones.push({dias,ces,intCes,prima,vac,total});
+
+  renderLiquidaciones();
 }
 
-let valorHora=salario/240;
-let valorDia=salario/30;
+function renderLiquidaciones(){
 
-let devengado=valorDia*dias;
-let aux=auxSel==="si"?(162000/30)*dias:0;
+  let cont=document.getElementById("resultadoLiquidacion");
+  cont.innerHTML="";
+  let totalGeneral=0;
 
-let extras=(extraD*valorHora*1.25)+(extraN*valorHora*1.75)+(extraDom*valorHora*2);
+  liquidaciones.forEach((l,i)=>{
+    totalGeneral+=l.total;
 
-let ibc=devengado+extras;
-let salud=ibc*0.04;
-let pension=ibc*0.04;
+    cont.innerHTML+=`
+    <div class="result">
+    <h3>Periodo ${i+1}</h3>
+    <table class="table">
+    <tr><td>Días</td><td>${l.dias}</td></tr>
+    <tr><td>Cesantías</td><td>${formatoCOP(l.ces)}</td></tr>
+    <tr><td>Intereses</td><td>${formatoCOP(l.intCes)}</td></tr>
+    <tr><td>Prima</td><td>${formatoCOP(l.prima)}</td></tr>
+    <tr><td>Vacaciones</td><td>${formatoCOP(l.vac)}</td></tr>
+    <tr><th>Total periodo</th><th>${formatoCOP(l.total)}</th></tr>
+    </table>
+    <button onclick="eliminarLiquidacion(${i})">Eliminar</button>
+    </div>
+    `;
+  });
 
-let total=devengado+aux+extras-salud-pension;
+  cont.innerHTML+=`
+  <div class="result total-final">
+  TOTAL GENERAL LIQUIDACIÓN: ${formatoCOP(totalGeneral)}
+  </div>
+  `;
+}
 
-document.getElementById("resultadoNom").innerHTML=`
-<div class="card">
-<table class="table">
+function eliminarLiquidacion(i){
+  liquidaciones.splice(i,1);
+  renderLiquidaciones();
+}
+
+</script>
+
+</body>
+</html>
