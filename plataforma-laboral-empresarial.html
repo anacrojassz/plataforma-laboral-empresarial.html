@@ -3,136 +3,125 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plataforma Laboral Profesional</title>
+<title>Plataforma Laboral Integral</title>
 
 <style>
 :root{
-  --azul:#0A2A43;
-  --azul2:#0F4C81;
-  --dorado:#C6A84A;
-  --gris:#f4f6f9;
+--azul:#0A2A43;
+--azul2:#0F4C81;
+--dorado:#C6A84A;
+--gris:#f4f6f9;
 }
 
 body{
-  margin:0;
-  font-family:'Segoe UI',sans-serif;
-  background:var(--gris);
-  color:var(--azul);
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:var(--gris);
+color:var(--azul);
 }
 
 header{
-  background:var(--azul);
-  color:white;
-  padding:20px;
-  text-align:center;
+background:var(--azul);
+color:white;
+padding:20px;
+text-align:center;
 }
 
 nav{
-  display:flex;
-  justify-content:center;
-  background:var(--azul2);
+display:flex;
+justify-content:center;
+background:var(--azul2);
 }
 
 nav button{
-  flex:1;
-  padding:12px;
-  border:none;
-  background:var(--azul2);
-  color:white;
-  cursor:pointer;
-  font-weight:600;
+flex:1;
+padding:12px;
+border:none;
+background:var(--azul2);
+color:white;
+cursor:pointer;
+font-weight:600;
 }
 
 nav button.active{
-  background:var(--dorado);
-  color:black;
+background:var(--dorado);
+color:black;
 }
 
 .container{
-  max-width:1200px;
-  margin:30px auto;
-  background:white;
-  padding:30px;
-  border-radius:10px;
-  box-shadow:0 5px 20px rgba(0,0,0,0.1);
+max-width:1200px;
+margin:30px auto;
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
 }
 
 h2{
-  border-left:6px solid var(--dorado);
-  padding-left:10px;
-  margin-top:30px;
+border-left:6px solid var(--dorado);
+padding-left:10px;
+margin-top:30px;
 }
 
 input, select{
-  width:100%;
-  padding:8px;
-  margin-top:5px;
-  margin-bottom:10px;
-  border-radius:5px;
-  border:1px solid #ccc;
+width:100%;
+padding:8px;
+margin-bottom:10px;
+border-radius:5px;
+border:1px solid #ccc;
 }
 
-button.calc{
-  background:var(--azul2);
-  color:white;
-  border:none;
-  padding:10px;
-  margin-top:10px;
-  border-radius:6px;
-  cursor:pointer;
+button{
+background:var(--azul2);
+color:white;
+border:none;
+padding:10px;
+margin-top:10px;
+border-radius:6px;
+cursor:pointer;
 }
 
-button.calc:hover{
-  background:var(--dorado);
-  color:black;
+button:hover{
+background:var(--dorado);
+color:black;
 }
 
 .table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:20px;
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
 }
 
-.table th, .table td{
-  border:1px solid #ddd;
-  padding:8px;
-  text-align:center;
+.table th,.table td{
+border:1px solid #ddd;
+padding:8px;
+text-align:center;
 }
 
-.result, .year-block, .normativa-content{
-  margin-top:20px;
-  padding:15px;
-  background:#eef2f7;
-  border-radius:8px;
+.result{
+margin-top:20px;
+padding:15px;
+background:#eef2f7;
+border-radius:8px;
 }
 
-.accordion{
-  background:var(--azul2);
-  color:white;
-  cursor:pointer;
-  padding:12px;
-  width:100%;
-  border:none;
-  text-align:left;
-  outline:none;
-  font-size:15px;
-  transition:0.4s;
-  margin-top:10px;
-  border-radius:5px;
+.total{
+font-size:18px;
+font-weight:bold;
+color:var(--dorado);
 }
-
-.activeAcc, .accordion:hover{
-  background:var(--dorado);
-  color:black;
+.acordeon{
+cursor:pointer;
+padding:12px;
+background:var(--azul2);
+color:white;
+margin-top:10px;
+border-radius:5px;
 }
-
 .panel{
-  padding:0 10px;
-  display:none;
-  background-color:#f4f7fb;
-  overflow:hidden;
-  margin-bottom:10px;
-  border-radius:5px;
+display:none;
+padding:15px;
+background:#f1f1f1;
 }
 </style>
 </head>
@@ -141,259 +130,238 @@ button.calc:hover{
 
 <header>
 <h1>PLATAFORMA LABORAL PROFESIONAL</h1>
-<p>Consulta y liquidación de nómina y contratos - Colombia</p>
+<p>Consultas laborales legales – Colombia</p>
 </header>
 
 <nav>
-  <button class="tab-btn active" onclick="abrirTab('empleado')">Empleado</button>
-  <button class="tab-btn" onclick="abrirTab('empresario')">Empresario</button>
-  <button class="tab-btn" onclick="abrirTab('normativa')">Normativa</button>
-  <button class="tab-btn" onclick="abrirTab('historial')">Historial</button>
+<button class="tab-btn active" onclick="openTab(event,'empleado')">Empleado</button>
+<button class="tab-btn" onclick="openTab(event,'empleador')">Empleador</button>
+<button class="tab-btn" onclick="openTab(event,'formativo')">Formativo</button>
 </nav>
 
 <div class="container">
 
-<!-- MÓDULO EMPLEADO -->
+<!-- ================= MÓDULO 1 EMPLEADO ================= -->
 <div id="empleado" class="tab" style="display:block;">
-<h2>Cálculo Nómina y Liquidación</h2>
 
-<label>Nombre</label>
-<input id="nombreEmp" placeholder="Nombre completo">
+<h2>Módulo Empleado</h2>
 
-<label>Cédula</label>
-<input id="ccEmp" placeholder="Cédula">
-
-<label>Tipo de cálculo</label>
-<select id="tipoCalc">
-<option value="diario">Diario</option>
-<option value="semanal">Semanal</option>
-<option value="quincenal">Quincenal</option>
-<option value="mensual">Mensual</option>
+<label>Tipo de Consulta</label>
+<select id="tipoConsultaEmp" onchange="cambiarModoEmp()">
+<option value="nomina">Nómina Profesional</option>
+<option value="liquidacion">Liquidación Multi-Año</option>
 </select>
 
-<label>Salario base</label>
+<div id="nominaEmp">
+
+<label>Tipo de vínculo</label>
+<select id="vinculoEmp">
+<option value="laboral">Contrato Laboral</option>
+<option value="servicios">Prestación de Servicios</option>
+</select>
+
+<label>Salario mensual</label>
 <input type="number" id="salarioEmp">
 
+<label>Días trabajados</label>
+<input type="number" id="diasEmp" value="30">
+
+<label>Horas extra diurna</label>
+<input type="number" id="hed">
+
+<label>Horas extra nocturna</label>
+<input type="number" id="hen">
+
+<label>Horas dominical</label>
+<input type="number" id="dom">
+
+<button onclick="calcularNominaEmp()">Calcular</button>
+<div id="resultadoNominaEmp" class="result"></div>
+
+</div>
+
+<div id="liqEmp" style="display:none;">
+
+<label>Salario mensual</label>
+<input type="number" id="salarioLiq">
+
 <label>Auxilio transporte</label>
-<input type="number" id="auxEmp" value="0">
+<input type="number" id="auxLiq">
 
-<label>Horas Extras Diurnas</label>
-<input type="number" id="extraDiurna" value="0">
+<label>Fecha inicio</label>
+<input type="date" id="inicioLiq">
 
-<label>Horas Extras Nocturnas</label>
-<input type="number" id="extraNocturna" value="0">
+<label>Fecha fin</label>
+<input type="date" id="finLiq">
 
-<label>Horas Dominicales y Festivas</label>
-<input type="number" id="extraDominical" value="0">
+<button onclick="agregarPeriodo()">Agregar Año</button>
+<div id="resultadoLiq"></div>
 
-<label>Fecha Inicio Contrato</label>
-<input type="date" id="inicioEmp">
-
-<label>Fecha Fin Contrato</label>
-<input type="date" id="finEmp">
-
-<button class="calc" onclick="calcularEmpleado()">Calcular</button>
-
-<div id="resultadoEmp" class="result"></div>
 </div>
 
-<!-- MÓDULO EMPRESARIO -->
-<div id="empresario" class="tab" style="display:none;">
-<h2>Gestión Costos Nómina</h2>
+</div>
 
-<label>Nombre Empresa</label>
-<input id="empresa">
+<!-- ================= MÓDULO 2 EMPLEADOR ================= -->
+<div id="empleador" class="tab" style="display:none;">
 
-<label>NIT</label>
-<input id="nit">
+<h2>Módulo Empleador</h2>
 
-<h3>Agregar Empleado</h3>
-<input id="nombreE" placeholder="Nombre">
-<input id="ccE" placeholder="Cédula">
-<input type="number" id="salarioE" placeholder="Salario">
-<select id="riesgo">
-<option value="0.00522">ARL Nivel 1 (0.522%)</option>
-<option value="0.01044">ARL Nivel 2 (1.044%)</option>
-<option value="0.02436">ARL Nivel 3 (2.436%)</option>
-<option value="0.04350">ARL Nivel 4 (4.350%)</option>
-<option value="0.06960">ARL Nivel 5 (6.960%)</option>
+<label>Tipo de consulta</label>
+<select id="tipoConsultaEmpresario">
+<option value="nomina">Nómina mensual</option>
+<option value="liquidacion">Liquidación empleados</option>
 </select>
-<input type="number" id="dotacion" placeholder="Dotación mensual" value="0">
 
-<button class="calc" onclick="agregarEmpleado()">Agregar Empleado</button>
+<input id="nombreEmpl" placeholder="Nombre">
+<input id="ccEmpl" placeholder="Cédula">
+<input type="number" id="salarioEmpl" placeholder="Salario">
 
-<table class="table" id="tablaEmp">
-<tr>
-<th>Nombre</th><th>CC</th><th>Costo Mensual</th><th>Liquidación Acumulada</th>
-</tr>
-</table>
+<select id="arl">
+<option value="0.00522">ARL Nivel 1</option>
+<option value="0.01044">Nivel 2</option>
+<option value="0.02436">Nivel 3</option>
+<option value="0.0435">Nivel 4</option>
+<option value="0.0696">Nivel 5</option>
+</select>
 
-<div id="totalesEmp" class="result"></div>
+<button onclick="agregarEmpleado()">Agregar</button>
 
-<button class="calc" onclick="guardarEmp()">Guardar Consulta</button>
-<button class="calc" onclick="window.print()">Imprimir / PDF</button>
-
-</div>
-
-<!-- NORMATIVA -->
-<div id="normativa" class="tab" style="display:none;">
-<h2>Normativa Laboral Vigente - Colombia</h2>
-
-<button class="accordion">Cesantías y Intereses</button>
-<div class="panel normativa-content">
-<p>Cesantías: Art. 249 CST<br>
-Intereses de cesantías: 12% anual, Ley 52 de 1975</p>
-</div>
-
-<button class="accordion">Prima de Servicios</button>
-<div class="panel normativa-content">
-<p>Prima: Art. 306 CST, proporcional al tiempo laborado</p>
-</div>
-
-<button class="accordion">Vacaciones</button>
-<div class="panel normativa-content">
-<p>Vacaciones: Art. 186 CST, 15 días hábiles por año</p>
-</div>
-
-<button class="accordion">Horas Extras y Recargos</button>
-<div class="panel normativa-content">
-<p>Extra Diurna 25%, Extra Nocturna 75%, Dominical/Festivo 100%</p>
-</div>
-
-<button class="accordion">Indemnización</button>
-<div class="panel normativa-content">
-<p>Indemnización según Art. 64 CST y tipo de contrato</p>
-</div>
+<table class="table" id="tablaEmpleador"></table>
+<div id="totalEmpleador" class="result"></div>
 
 </div>
 
-<!-- HISTORIAL -->
-<div id="historial" class="tab" style="display:none;">
-<h2>Historial Guardado</h2>
-<div id="historialContent" class="result"></div>
+<!-- ================= MÓDULO 3 FORMATIVO ================= -->
+<div id="formativo" class="tab" style="display:none;">
+
+<h2>Normativa y Formación</h2>
+
+<div class="acordeon" onclick="togglePanel(this)">Código Sustantivo del Trabajo</div>
+<div class="panel">
+<a href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=331" target="_blank">Consultar CST Oficial</a>
+</div>
+
+<div class="acordeon" onclick="togglePanel(this)">Ley 50 de 1990</div>
+<div class="panel">
+<a href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=281" target="_blank">Consultar Ley 50</a>
+</div>
+
+<div class="acordeon" onclick="togglePanel(this)">Ley 789 de 2002</div>
+<div class="panel">
+<a href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=673" target="_blank">Consultar Ley 789</a>
+</div>
+
+<div class="acordeon" onclick="togglePanel(this)">Jornadas e Incapacidades</div>
+<div class="panel">
+<p>Art. 160 CST – Jornada máxima legal</p>
+<p>Art. 168 – Trabajo dominical</p>
+<p>Art. 208 – Incapacidades por enfermedad</p>
+</div>
+
 </div>
 
 </div>
 
 <script>
-// Navegación por pestañas
-function abrirTab(tab){
-  document.querySelectorAll('.tab').forEach(t=>t.style.display='none');
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById(tab).style.display='block';
-  event.currentTarget.classList.add('active');
+
+function openTab(evt,id){
+document.querySelectorAll('.tab').forEach(t=>t.style.display="none");
+document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove("active"));
+document.getElementById(id).style.display="block";
+evt.currentTarget.classList.add("active");
 }
 
-// Acordeón normativa
-document.querySelectorAll('.accordion').forEach((acc)=>{
-  acc.addEventListener('click', ()=>{
-    acc.classList.toggle('activeAcc');
-    let panel = acc.nextElementSibling;
-    if(panel.style.display==='block'){ panel.style.display='none'; }
-    else{ panel.style.display='block'; }
-  });
-});
-
-// Funciones Empleado
-function calcularEmpleado(){
-  let nombre=document.getElementById("nombreEmp").value;
-  let salario=parseFloat(document.getElementById("salarioEmp").value);
-  let aux=parseFloat(document.getElementById("auxEmp").value);
-  let extraDiurna=parseFloat(document.getElementById("extraDiurna").value);
-  let extraNocturna=parseFloat(document.getElementById("extraNocturna").value);
-  let extraDom=parseFloat(document.getElementById("extraDominical").value);
-  let inicio=document.getElementById("inicioEmp").value;
-  let fin=document.getElementById("finEmp").value;
-
-  let dias=Math.floor((new Date(fin)-new Date(inicio))/(1000*60*60*24))+1;
-  
-  let salarioDia=salario/30;
-  let devengado=salario+(aux);
-  let horasExtras=(extraDiurna*salarioDia*1.25)+(extraNocturna*salarioDia*1.75)+(extraDom*salarioDia*2);
-
-  let salud=devengado*0.04;
-  let pension=devengado*0.04;
-
-  let ces=salario*dias/360;
-  let intCes=ces*0.12;
-  let prima=salario*dias/360;
-  let vac=salario*dias/720;
-
-  let total=devengado+horasExtras+ces+intCes+prima+vac-salud-pension;
-
-  document.getElementById("resultadoEmp").innerHTML=`
-  <h3>Resultado Empleado: ${nombre}</h3>
-  <table class="table">
-  <tr><th>Concepto</th><th>Valor</th></tr>
-  <tr><td>Salario Base</td><td>$${salario.toFixed(0)}</td></tr>
-  <tr><td>Auxilio Transporte</td><td>$${aux.toFixed(0)}</td></tr>
-  <tr><td>Horas Extras</td><td>$${horasExtras.toFixed(0)}</td></tr>
-  <tr><td>Cesantías</td><td>$${ces.toFixed(0)}</td></tr>
-  <tr><td>Intereses Cesantías</td><td>$${intCes.toFixed(0)}</td></tr>
-  <tr><td>Prima</td><td>$${prima.toFixed(0)}</td></tr>
-  <tr><td>Vacaciones</td><td>$${vac.toFixed(0)}</td></tr>
-  <tr><td>Salud 4%</td><td>$${salud.toFixed(0)}</td></tr>
-  <tr><td>Pensión 4%</td><td>$${pension.toFixed(0)}</td></tr>
-  <tr><th>Total Neto</th><th>$${total.toFixed(0)}</th></tr>
-  </table>
-  `;
+function formato(v){
+return v.toLocaleString("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0});
 }
 
-// Funciones Empresario
+/* EMPLEADO NOMINA */
+function calcularNominaEmp(){
+
+let salario=parseFloat(document.getElementById("salarioEmp").value)||0;
+let dias=parseFloat(document.getElementById("diasEmp").value)||30;
+
+if(salario<1300000){alert("Validación: salario inferior al mínimo legal");}
+
+let valorHora=salario/240;
+let salarioPeriodo=(salario/30)*dias;
+
+let hed=parseFloat(document.getElementById("hed").value)||0;
+let hen=parseFloat(document.getElementById("hen").value)||0;
+let dom=parseFloat(document.getElementById("dom").value)||0;
+
+let extras=(hed*valorHora*1.25)+(hen*valorHora*1.75)+(dom*valorHora*2);
+
+let salud=salarioPeriodo*0.04;
+let pension=salarioPeriodo*0.04;
+
+let total=salarioPeriodo+extras-salud-pension;
+
+document.getElementById("resultadoNominaEmp").innerHTML=`
+Salario: ${formato(salarioPeriodo)}<br>
+Extras: ${formato(extras)}<br>
+Salud: ${formato(salud)}<br>
+Pensión: ${formato(pension)}<br>
+<div class="total">Total Neto: ${formato(total)}</div>`;
+}
+
+/* LIQUIDACION MULTI-AÑO */
+let periodos=[];
+
+function agregarPeriodo(){
+let salario=parseFloat(document.getElementById("salarioLiq").value)||0;
+let inicio=document.getElementById("inicioLiq").value;
+let fin=document.getElementById("finLiq").value;
+
+let dias=(new Date(fin)-new Date(inicio))/(1000*60*60*24);
+
+let ces=salario*dias/360;
+let prima=salario*dias/360;
+let vac=salario*dias/720;
+let intCes=ces*0.12*(dias/360);
+
+let total=ces+prima+vac+intCes;
+
+periodos.push(total);
+
+let acumulado=periodos.reduce((a,b)=>a+b,0);
+
+document.getElementById("resultadoLiq").innerHTML+=`
+<div class="result">
+Periodo: ${formato(total)}
+</div>
+<div class="total">Acumulado: ${formato(acumulado)}</div>`;
+}
+
+/* EMPLEADOR */
 let empleados=[];
+
 function agregarEmpleado(){
-  let nombre=document.getElementById("nombreE").value;
-  let cc=document.getElementById("ccE").value;
-  let salario=parseFloat(document.getElementById("salarioE").value);
-  let riesgo=parseFloat(document.getElementById("riesgo").value);
-  let dotacion=parseFloat(document.getElementById("dotacion").value);
+let salario=parseFloat(document.getElementById("salarioEmpl").value)||0;
+let arl=parseFloat(document.getElementById("arl").value)||0;
 
-  let salud=salario*0.085;
-  let pension=salario*0.12;
-  let arl=salario*riesgo;
-  let caja=salario*0.04;
-  let icbf=salario*0.03;
-  let sena=salario*0.02;
+let costo=salario+(salario*0.085)+(salario*0.12)+(salario*arl)+(salario*0.04)+(salario*0.03)+(salario*0.02);
 
-  let costoTotal=salario+salud+pension+arl+caja+icbf+sena+dotacion;
+empleados.push(costo);
 
-  empleados.push({nombre,cc,costoTotal});
+let total=empleados.reduce((a,b)=>a+b,0);
 
-  renderTabla();
+document.getElementById("tablaEmpleador").innerHTML+=`
+<tr><td>${formato(costo)}</td></tr>`;
+
+document.getElementById("totalEmpleador").innerHTML=
+`<div class="total">Total Nómina Empresa: ${formato(total)}</div>`;
 }
 
-function renderTabla(){
-  let tabla=document.getElementById("tablaEmp");
-  tabla.innerHTML=`<tr><th>Nombre</th><th>CC</th><th>Costo Mensual</th></tr>`;
-  let total=0;
-  empleados.forEach(e=>{
-    total+=e.costoTotal;
-    tabla.innerHTML+=`<tr><td>${e.nombre}</td><td>${e.cc}</td><td>$${e.costoTotal.toFixed(0)}</td></tr>`;
-  });
-  document.getElementById("totalesEmp").innerHTML=`<h3>Total Nómina Empresa: $${total.toFixed(0)}</h3><p>Total empleados: ${empleados.length}</p>`;
+/* FORMATIVO */
+function togglePanel(el){
+let panel=el.nextElementSibling;
+panel.style.display=panel.style.display==="block"?"none":"block";
 }
-
-function guardarEmp(){
-  localStorage.setItem("empleados",JSON.stringify(empleados));
-  alert("Consulta guardada correctamente");
-  renderHistorial();
-}
-
-function renderHistorial(){
-  let h=document.getElementById("historialContent");
-  let data=JSON.parse(localStorage.getItem("empleados"))||[];
-  if(data.length===0){h.innerHTML="No hay historial guardado"; return;}
-  h.innerHTML=`<table class="table"><tr><th>Nombre</th><th>CC</th><th>Costo Mensual</th></tr>`;
-  data.forEach(e=>{
-    h.innerHTML+=`<tr><td>${e.nombre}</td><td>${e.cc}</td><td>$${e.costoTotal.toFixed(0)}</td></tr>`;
-  });
-  h.innerHTML+="</table>";
-}
-
-renderHistorial();
 
 </script>
 
 </body>
 </html>
+
 
